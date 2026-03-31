@@ -748,6 +748,65 @@
       font-weight: 500;
     }
 
+    /* MODE TOGGLE */
+    .mode-toggle {
+      display: flex;
+      background: var(--gray-100);
+      border-radius: 100px;
+      padding: 3px;
+      gap: 0;
+      margin-bottom: 16px;
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 9px 12px;
+      border-radius: 100px;
+      border: none;
+      background: transparent;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--gray-500);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .mode-btn.active {
+      background: var(--white);
+      color: var(--black);
+      font-weight: 500;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    }
+
+    /* OUTREACH FORM */
+    .outreach-form,
+    .inbound-form {
+      animation: fadeIn 0.18s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .outreach-section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin: 18px 0 10px;
+    }
+
+    .outreach-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .outreach-field:last-child { margin-bottom: 0; }
+
     /* IMPORT SECTION */
     .import-section { margin-bottom: 4px; }
 
@@ -1058,48 +1117,98 @@
       </div>
       <div class="panel-card">
         <div class="panel-header">
-          <h2>Incoming email</h2>
+          <h2 id="panel-title">Incoming email</h2>
           <span class="profile-badge empty" id="profile-badge">No profile set</span>
         </div>
         <div class="panel-body">
-          <div class="import-section">
-            <label>Import from email</label>
-            <div class="import-btns">
-              <button class="import-btn gmail" onclick="showComingSoon('gmail')">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2" fill="#fce8e6" stroke="#EA4335" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#EA4335" stroke-width="1.5" stroke-linejoin="round"/></svg>
-                Connect Gmail
-              </button>
-              <button class="import-btn outlook" onclick="showComingSoon('outlook')">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2" fill="#e3f2fd" stroke="#0078D4" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#0078D4" stroke-width="1.5" stroke-linejoin="round"/></svg>
-                Connect Outlook
-              </button>
+
+          <!-- MODE TOGGLE -->
+          <div class="mode-toggle">
+            <button class="mode-btn active" data-mode="inbound" onclick="setEmailMode('inbound')">↩ Inbound reply</button>
+            <button class="mode-btn" data-mode="outreach" onclick="setEmailMode('outreach')">✦ Outreach</button>
+          </div>
+
+          <!-- INBOUND FORM -->
+          <div id="inbound-form" class="inbound-form">
+            <div class="import-section">
+              <label>Import from email</label>
+              <div class="import-btns">
+                <button class="import-btn gmail" onclick="showComingSoon('gmail')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" fill="#fce8e6" stroke="#EA4335" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#EA4335" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                  Connect Gmail
+                </button>
+                <button class="import-btn outlook" onclick="showComingSoon('outlook')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" fill="#e3f2fd" stroke="#0078D4" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#0078D4" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                  Connect Outlook
+                </button>
+              </div>
+            </div>
+
+            <div class="or-divider">or paste manually</div>
+
+            <div class="type-section">
+              <label>Email type</label>
+              <div class="type-options">
+                <button class="type-btn active" data-type="sales" onclick="selectType(this)">
+                  <span class="type-emoji">💼</span>Sales
+                </button>
+                <button class="type-btn" data-type="customer-service" onclick="selectType(this)">
+                  <span class="type-emoji">🎧</span>Customer service
+                </button>
+                <button class="type-btn" data-type="customer-success" onclick="selectType(this)">
+                  <span class="type-emoji">🌱</span>Customer success
+                </button>
+                <button class="type-btn" data-type="support" onclick="selectType(this)">
+                  <span class="type-emoji">🛠️</span>Support
+                </button>
+              </div>
+            </div>
+
+            <textarea class="email-textarea" id="email-input" style="margin-top:16px" placeholder="Paste the email you received here...&#10;&#10;e.g. 'Thanks for the proposal, but the price is a bit high and we're also looking at other vendors...'"></textarea>
+          </div>
+
+          <!-- OUTREACH FORM -->
+          <div id="outreach-form" class="outreach-form" style="display:none">
+            <div class="outreach-section-label">Goal</div>
+            <div class="outreach-field">
+              <label>What is the goal of this email?</label>
+              <textarea id="o-goal" rows="2" placeholder="e.g. Book a demo call, introduce our product, follow up after a conference"></textarea>
+            </div>
+            <div class="outreach-field">
+              <label>What do you want them to do after reading?</label>
+              <input type="text" id="o-cta" placeholder="e.g. Reply to book a 20 min call">
+            </div>
+
+            <div class="outreach-section-label">Prospect info</div>
+            <div class="outreach-field">
+              <label>Prospect name</label>
+              <input type="text" id="o-prospect-name" placeholder="Sarah Jensen">
+            </div>
+            <div class="outreach-field">
+              <label>Prospect job title</label>
+              <input type="text" id="o-prospect-title" placeholder="Head of Sales">
+            </div>
+            <div class="outreach-field">
+              <label>Prospect company</label>
+              <input type="text" id="o-prospect-company" placeholder="Acme Corp">
+            </div>
+            <div class="outreach-field">
+              <label>LinkedIn URL</label>
+              <input type="text" id="o-linkedin" placeholder="https://linkedin.com/in/...">
+            </div>
+            <div class="outreach-field">
+              <label>Company website</label>
+              <input type="text" id="o-website" placeholder="https://...">
+            </div>
+            <div class="outreach-field">
+              <label>Anything specific you know about them?</label>
+              <textarea id="o-notes" rows="2" placeholder="e.g. They just raised funding, they posted about hiring challenges, we met at a conference"></textarea>
             </div>
           </div>
 
-          <div class="or-divider">or paste manually</div>
-
-          <div class="type-section">
-            <label>Email type</label>
-            <div class="type-options">
-              <button class="type-btn active" data-type="sales" onclick="selectType(this)">
-                <span class="type-emoji">💼</span>Sales
-              </button>
-              <button class="type-btn" data-type="customer-service" onclick="selectType(this)">
-                <span class="type-emoji">🎧</span>Customer service
-              </button>
-              <button class="type-btn" data-type="customer-success" onclick="selectType(this)">
-                <span class="type-emoji">🌱</span>Customer success
-              </button>
-              <button class="type-btn" data-type="support" onclick="selectType(this)">
-                <span class="type-emoji">🛠️</span>Support
-              </button>
-            </div>
-          </div>
-
-          <textarea class="email-textarea" id="email-input" style="margin-top:16px" placeholder="Paste the email you received here...&#10;&#10;e.g. 'Thanks for the proposal, but the price is a bit high and we're also looking at other vendors...'"></textarea>
- 
+          <!-- SHARED: TONE + LANGUAGE + GENERATE -->
           <div class="tone-section">
-            <label>Reply tone</label>
+            <label>Tone</label>
             <div class="reply-tone-options">
               <button class="reply-tone-btn active" data-tone="confident" onclick="selectTone(this)">
                 <span class="tone-emoji">💼</span>Confident
@@ -1121,9 +1230,9 @@
               </button>
             </div>
           </div>
- 
+
           <div class="lang-section">
-            <label>Reply language</label>
+            <label>Language</label>
             <div class="lang-options">
               <button class="lang-btn active" data-lang="danish" onclick="selectLang(this)">🇩🇰 Danish</button>
               <button class="lang-btn" data-lang="swedish" onclick="selectLang(this)">🇸🇪 Swedish</button>
@@ -1145,7 +1254,7 @@
       <div class="empty-state" id="empty-state">
         <div class="empty-icon">✦</div>
         <h3>Your replies will appear here</h3>
-        <p>Paste an incoming email and hit generate</p>
+        <p id="empty-hint">Paste an incoming email and hit generate</p>
       </div>
       <div class="replies-grid" id="replies-grid" style="display:none"></div>
     </div>
@@ -1399,11 +1508,30 @@
   }
 
   // STATE
+  let emailMode = 'inbound';
   let selectedTone = 'confident';
   let selectedType = 'sales';
   let selectedLang = 'danish';
   let profile = {};
   let apiKey = '';
+
+  // EMAIL MODE TOGGLE
+  function setEmailMode(mode) {
+    emailMode = mode;
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+    document.getElementById('inbound-form').style.display = mode === 'inbound' ? 'block' : 'none';
+    document.getElementById('outreach-form').style.display = mode === 'outreach' ? 'block' : 'none';
+    document.getElementById('btn-text').textContent = mode === 'outreach' ? 'Write outreach email' : 'Generate 3 replies';
+    document.getElementById('panel-title').textContent = mode === 'outreach' ? 'Cold outreach' : 'Incoming email';
+    document.getElementById('empty-state').style.display = 'block';
+    document.getElementById('replies-grid').style.display = 'none';
+    document.getElementById('empty-hint').textContent = mode === 'outreach'
+      ? 'Fill in the prospect info and hit generate'
+      : 'Paste an incoming email and hit generate';
+    // Remove skeleton if present
+    const sk = document.getElementById('skeleton');
+    if (sk) sk.remove();
+  }
  
   // INIT
   window.onload = () => {
@@ -1603,15 +1731,114 @@ ${email}
 """`;
   }
  
+  // BUILD OUTREACH PROMPT
+  function buildOutreachPrompt() {
+    const goal = document.getElementById('o-goal').value.trim();
+    const cta = document.getElementById('o-cta').value.trim();
+    const prospectName = document.getElementById('o-prospect-name').value.trim();
+    const prospectTitle = document.getElementById('o-prospect-title').value.trim();
+    const prospectCompany = document.getElementById('o-prospect-company').value.trim();
+    const linkedin = document.getElementById('o-linkedin').value.trim();
+    const website = document.getElementById('o-website').value.trim();
+    const notes = document.getElementById('o-notes').value.trim();
+
+    let senderCtx = '';
+    if (profile.name) senderCtx += `Sender: ${profile.name}`;
+    if (profile.title) senderCtx += `, ${profile.title}`;
+    if (profile.company) senderCtx += ` at ${profile.company}`;
+    senderCtx += '\n';
+    if (profile.product) senderCtx += `Product/service: ${profile.product}\n`;
+    if (profile.customer) senderCtx += `Typical customer: ${profile.customer}\n`;
+    if (profile.counters) senderCtx += `Value proposition: ${profile.counters}\n`;
+    if (profile.tones && profile.tones.length) senderCtx += `Communication style: ${profile.tones.join(', ')}\n`;
+    if (profile.extra) senderCtx += `Additional notes: ${profile.extra}\n`;
+
+    const langInstruction = {
+      'danish': 'Write in Danish (Dansk).',
+      'swedish': 'Write in Swedish (Svenska).',
+      'german': 'Write in German (Deutsch).',
+      'english': 'Write in English.'
+    }[selectedLang] || 'Write in English.';
+
+    return `${senderCtx}
+You are a world-class cold outreach copywriter. Write exactly 3 different cold outreach email options.
+
+Goal: ${goal || 'Introduce ourselves and explore fit'}
+Desired CTA: ${cta || 'Reply to book a short call'}
+Tone: ${selectedTone}
+Language: ${langInstruction}
+
+Prospect:
+- Name: ${prospectName || 'the prospect'}
+- Title: ${prospectTitle || 'unknown'}
+- Company: ${prospectCompany || 'their company'}
+${linkedin ? `- LinkedIn: ${linkedin}` : ''}
+${website ? `- Website: ${website}` : ''}
+${notes ? `- Notes about them: ${notes}` : ''}
+
+Each email must:
+- Be under 150 words, human, and never sound like a template
+- Open with something specific to the prospect or their company
+- State the value proposition in one sentence
+- Close with one clear, easy call to action
+- Never use buzzwords like "synergy", "leverage", or "game-changer"
+
+Format as JSON only, no other text:
+{
+  "replies": [
+    { "strategy": "approach name (2-3 words)", "body": "full email text" },
+    { "strategy": "approach name (2-3 words)", "body": "full email text" },
+    { "strategy": "approach name (2-3 words)", "body": "full email text" }
+  ]
+}`;
+  }
+
+  function getDemoOutreachReplies() {
+    const prospectName = document.getElementById('o-prospect-name').value.trim() || 'there';
+    const prospectCompany = document.getElementById('o-prospect-company').value.trim() || 'your company';
+    const senderName = profile.name || 'Magnus';
+    const product = profile.product || 'ReplyRight';
+    const senderCompany = profile.company || '';
+    return [
+      {
+        strategy: "Problem first",
+        body: `Hi ${prospectName},\n\nMost sales teams at companies like ${prospectCompany} spend hours writing emails that get ignored. It's a real time sink.\n\n${product} fixes that — it writes personalised, ready-to-send replies in seconds, matched to your voice and your deals.\n\nWould 20 minutes next week make sense to see if it fits?\n\n${senderName}${senderCompany ? '\n' + senderCompany : ''}`
+      },
+      {
+        strategy: "Specific insight",
+        body: `Hi ${prospectName},\n\nI came across ${prospectCompany} and noticed you're scaling your sales efforts — congrats.\n\nOne thing that tends to slow down growing teams is the back-and-forth of writing email replies. ${product} helps reps respond faster and more persuasively, without sounding generic.\n\nHappy to show you in a quick 20-min demo — interested?\n\nBest,\n${senderName}${senderCompany ? '\n' + senderCompany : ''}`
+      },
+      {
+        strategy: "Direct & short",
+        body: `Hi ${prospectName},\n\nQuick question: how much time does your team spend crafting sales email replies each week?\n\n${product} cuts that by ~70% while actually improving how those emails land. It takes 20 minutes to see whether it's relevant for ${prospectCompany}.\n\nWorth a quick call?\n\n${senderName}${senderCompany ? '\n' + senderCompany : ''}`
+      }
+    ];
+  }
+
   // GENERATE
   async function generateReplies() {
-    const email = document.getElementById('email-input').value.trim();
-    if (!email) {
-      document.getElementById('email-input').focus();
-      document.getElementById('email-input').style.borderColor = '#e57373';
-      setTimeout(() => document.getElementById('email-input').style.borderColor = '', 1500);
-      return;
+    // Validate based on mode
+    if (emailMode === 'inbound') {
+      const email = document.getElementById('email-input').value.trim();
+      if (!email) {
+        document.getElementById('email-input').focus();
+        document.getElementById('email-input').style.borderColor = '#e57373';
+        setTimeout(() => document.getElementById('email-input').style.borderColor = '', 1500);
+        return;
+      }
+    } else {
+      const goal = document.getElementById('o-goal').value.trim();
+      const name = document.getElementById('o-prospect-name').value.trim();
+      if (!goal && !name) {
+        document.getElementById('o-goal').focus();
+        document.getElementById('o-goal').style.borderColor = '#e57373';
+        setTimeout(() => document.getElementById('o-goal').style.borderColor = '', 1500);
+        return;
+      }
     }
+
+    // Keep existing inbound email reference for backward compat
+    const email = emailMode === 'inbound' ? document.getElementById('email-input').value.trim() : '';
  
     const btn = document.getElementById('generate-btn');
     const spinner = document.getElementById('spinner');
@@ -1645,13 +1872,14 @@ ${email}
  
       if (apiKey) {
         // Real API call
+        const prompt = emailMode === 'outreach' ? buildOutreachPrompt() : buildPrompt(email);
         const response = await fetch('https://api.anthropic.com/v1/messages', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             model: 'claude-sonnet-4-20250514',
             max_tokens: 1500,
-            messages: [{ role: 'user', content: buildPrompt(email) }]
+            messages: [{ role: 'user', content: prompt }]
           })
         });
         const data = await response.json();
@@ -1666,7 +1894,7 @@ ${email}
       } else {
         // Demo mode
         await new Promise(r => setTimeout(r, 1800));
-        replies = getDemoReplies(email);
+        replies = emailMode === 'outreach' ? getDemoOutreachReplies() : getDemoReplies(email);
       }
  
       renderReplies(replies);
@@ -1678,7 +1906,7 @@ ${email}
       if (sk) sk.remove();
       btn.disabled = false;
       spinner.style.display = 'none';
-      btnText.textContent = 'Generate 3 replies';
+      btnText.textContent = emailMode === 'outreach' ? 'Write outreach email' : 'Generate 3 replies';
     }
   }
  
