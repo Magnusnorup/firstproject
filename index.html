@@ -336,6 +336,53 @@
       font-weight: 300;
     }
 
+    /* INTEGRATIONS */
+    .integrations-strip {
+      margin-top: 56px;
+      padding-top: 40px;
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .integrations-label {
+      font-size: 13px;
+      color: var(--gray-500);
+      white-space: nowrap;
+    }
+
+    .integrations-logos {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .integration-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border: 1px solid var(--gray-200);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+      background: var(--white);
+    }
+
+    .integration-coming {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--gray-500);
+      background: var(--gray-100);
+      padding: 2px 8px;
+      border-radius: 100px;
+      margin-left: 2px;
+    }
+
     /* PRICING */
     .pricing-grid {
       display: grid;
@@ -668,6 +715,8 @@
       .step { padding: 32px 24px; }
       .step-number { font-size: 48px; margin-bottom: 16px; }
 
+      .integrations-strip { flex-direction: column; align-items: flex-start; gap: 16px; margin-top: 40px; padding-top: 32px; }
+
       .pricing-grid { grid-template-columns: 1fr; }
       .pricing-card { padding: 32px 28px; }
 
@@ -763,6 +812,22 @@
         <div class="step-number">03</div>
         <h3>Get the perfect reply</h3>
         <p>Receive a professional, persuasive response tailored to move the deal forward — ready to send in one click.</p>
+      </div>
+    </div>
+
+    <div class="integrations-strip">
+      <span class="integrations-label">Works with your inbox</span>
+      <div class="integrations-logos">
+        <div class="integration-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2" fill="#fce8e6" stroke="#EA4335" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#EA4335" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          Gmail
+          <span class="integration-coming">Coming soon</span>
+        </div>
+        <div class="integration-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2" fill="#e3f2fd" stroke="#0078D4" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#0078D4" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          Outlook
+          <span class="integration-coming">Coming soon</span>
+        </div>
       </div>
     </div>
   </section>

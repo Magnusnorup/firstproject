@@ -748,6 +748,212 @@
       font-weight: 500;
     }
 
+    /* IMPORT SECTION */
+    .import-section { margin-bottom: 4px; }
+
+    .import-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .import-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-200);
+      background: var(--white);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+      cursor: pointer;
+      transition: all 0.15s;
+      min-height: 42px;
+    }
+
+    .import-btn:hover { background: var(--gray-50); }
+    .import-btn.gmail:hover { border-color: #EA4335; }
+    .import-btn.outlook:hover { border-color: #0078D4; }
+
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0 6px;
+      font-size: 12px;
+      color: var(--gray-400);
+      font-weight: 400;
+    }
+
+    .or-divider::before,
+    .or-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gray-200);
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,15,15,0.45);
+      backdrop-filter: blur(4px);
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 40px 36px 36px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.14);
+      transform: translateY(16px) scale(0.98);
+      transition: transform 0.2s;
+    }
+
+    .modal-overlay.open .modal-card { transform: translateY(0) scale(1); }
+
+    .modal-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-icon.gmail { background: #fce8e6; }
+    .modal-icon.outlook { background: #e3f2fd; }
+
+    .modal-card h2 {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: -0.4px;
+      margin-bottom: 10px;
+    }
+
+    .modal-card > p {
+      font-size: 14px;
+      color: var(--gray-500);
+      font-weight: 300;
+      line-height: 1.65;
+      margin-bottom: 0;
+    }
+
+    .modal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin: 16px 0;
+      letter-spacing: 0.2px;
+    }
+
+    .modal-note {
+      font-size: 13px;
+      color: var(--gray-400);
+      margin-bottom: 24px;
+    }
+
+    .modal-close {
+      width: 100%;
+      padding: 12px;
+      border-radius: 100px;
+      border: 1.5px solid var(--gray-200);
+      background: transparent;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--black);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .modal-close:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+
+    /* CONNECTED ACCOUNTS */
+    .connected-account-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .connected-account-row:last-child { border-bottom: none; }
+
+    .account-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .account-logo {
+      width: 34px; height: 34px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .account-logo.gmail { background: #fce8e6; }
+    .account-logo.outlook { background: #e3f2fd; }
+
+    .account-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+      margin-bottom: 2px;
+    }
+
+    .account-status {
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+
+    .connect-account-btn {
+      padding: 7px 16px;
+      border-radius: 100px;
+      border: 1.5px solid var(--gray-200);
+      background: var(--white);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-500);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .connect-account-btn:hover { border-color: var(--accent); color: var(--accent); }
+
     /* MOBILE */
     @media (max-width: 767px) {
       header {
@@ -856,6 +1062,22 @@
           <span class="profile-badge empty" id="profile-badge">No profile set</span>
         </div>
         <div class="panel-body">
+          <div class="import-section">
+            <label>Import from email</label>
+            <div class="import-btns">
+              <button class="import-btn gmail" onclick="showComingSoon('gmail')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2" fill="#fce8e6" stroke="#EA4335" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#EA4335" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                Connect Gmail
+              </button>
+              <button class="import-btn outlook" onclick="showComingSoon('outlook')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2" fill="#e3f2fd" stroke="#0078D4" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#0078D4" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                Connect Outlook
+              </button>
+            </div>
+          </div>
+
+          <div class="or-divider">or paste manually</div>
+
           <div class="type-section">
             <label>Email type</label>
             <div class="type-options">
@@ -1091,12 +1313,73 @@
       </div>
     </div>
  
+    <!-- Connected accounts -->
+    <div class="profile-card">
+      <div class="profile-card-header">
+        <div class="card-icon">🔗</div>
+        <div>
+          <h2>Connected accounts</h2>
+          <p>Import emails directly from your inbox — no copy-pasting</p>
+        </div>
+      </div>
+      <div class="profile-card-body full">
+        <div class="connected-account-row">
+          <div class="account-info">
+            <div class="account-logo gmail">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2" fill="#fce8e6" stroke="#EA4335" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#EA4335" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div class="account-name">Gmail</div>
+              <div class="account-status">Not connected</div>
+            </div>
+          </div>
+          <button class="connect-account-btn" onclick="showComingSoon('gmail')">Connect</button>
+        </div>
+        <div class="connected-account-row">
+          <div class="account-info">
+            <div class="account-logo outlook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2" fill="#e3f2fd" stroke="#0078D4" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#0078D4" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div class="account-name">Outlook</div>
+              <div class="account-status">Not connected</div>
+            </div>
+          </div>
+          <button class="connect-account-btn" onclick="showComingSoon('outlook')">Connect</button>
+        </div>
+      </div>
+    </div>
+
     <button class="save-btn" onclick="saveProfile()">Save profile</button>
     <div class="save-confirmation" id="save-confirmation">✓ Profile saved — your replies will now be fully personalised!</div>
   </div>
 </div>
  
 <script>
+  // COMING SOON MODAL
+  const gmailSVG = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2" fill="#fce8e6" stroke="#EA4335" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#EA4335" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+  const outlookSVG = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2" fill="#e3f2fd" stroke="#0078D4" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#0078D4" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+
+  function showComingSoon(service) {
+    const isGmail = service === 'gmail';
+    const icon = document.getElementById('modal-icon');
+    icon.className = 'modal-icon ' + service;
+    icon.innerHTML = isGmail ? gmailSVG : outlookSVG;
+    document.getElementById('modal-title').textContent = (isGmail ? 'Gmail' : 'Outlook') + ' integration';
+    document.getElementById('modal-desc').textContent = 'Connect your ' + (isGmail ? 'Gmail' : 'Outlook') + ' inbox to automatically import emails into ReplyRight — no more copy-pasting.';
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  }
+
   // AUTH GUARD
   const rr_session = localStorage.getItem('rr_session');
   if (!rr_session) window.location.href = 'login.html';
@@ -1435,6 +1718,18 @@ ${email}
     ];
   }
 </script>
- 
+
+<!-- COMING SOON MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal-card">
+    <div class="modal-icon" id="modal-icon"></div>
+    <h2 id="modal-title"></h2>
+    <p id="modal-desc"></p>
+    <div class="modal-badge">✦ Coming soon</div>
+    <p class="modal-note">Join the waitlist to get early access when it launches.</p>
+    <button class="modal-close" onclick="closeModal()">Got it</button>
+  </div>
+</div>
+
 </body>
 </html>
