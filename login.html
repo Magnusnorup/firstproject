@@ -298,9 +298,9 @@
 
 <script>
   // Already logged in? Skip straight to app
-  if (localStorage.getItem('rr_session')) {
-    window.location.href = 'app.html';
-  }
+  try {
+    if (localStorage.getItem('rr_session')) window.location.href = 'app.html';
+  } catch (e) {}
 
   function switchTab(tab) {
     document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
@@ -329,15 +329,18 @@
     if (!email || !email.includes('@')) return showError('signup-error', 'Please enter a valid email address.');
     if (password.length < 6) return showError('signup-error', 'Password must be at least 6 characters.');
 
-    const users = JSON.parse(localStorage.getItem('rr_users') || '[]');
-    if (users.find(u => u.email === email)) {
-      return showError('signup-error', 'An account with that email already exists. Try logging in.');
+    try {
+      const users = JSON.parse(localStorage.getItem('rr_users') || '[]');
+      if (users.find(u => u.email === email)) {
+        return showError('signup-error', 'An account with that email already exists. Try logging in.');
+      }
+      users.push({ name, email, password });
+      localStorage.setItem('rr_users', JSON.stringify(users));
+      localStorage.setItem('rr_session', JSON.stringify({ name, email }));
+      window.location.href = 'app.html';
+    } catch (e) {
+      showError('signup-error', 'Something went wrong. Please try again.');
     }
-
-    users.push({ name, email, password });
-    localStorage.setItem('rr_users', JSON.stringify(users));
-    localStorage.setItem('rr_session', JSON.stringify({ name, email }));
-    window.location.href = 'app.html';
   }
 
   function logIn() {
@@ -348,12 +351,15 @@
     if (!email) return showError('login-error', 'Please enter your email.');
     if (!password) return showError('login-error', 'Please enter your password.');
 
-    const users = JSON.parse(localStorage.getItem('rr_users') || '[]');
-    const user = users.find(u => u.email === email && u.password === password);
-    if (!user) return showError('login-error', 'Incorrect email or password.');
-
-    localStorage.setItem('rr_session', JSON.stringify({ name: user.name, email: user.email }));
-    window.location.href = 'app.html';
+    try {
+      const users = JSON.parse(localStorage.getItem('rr_users') || '[]');
+      const user = users.find(u => u.email === email && u.password === password);
+      if (!user) return showError('login-error', 'Incorrect email or password.');
+      localStorage.setItem('rr_session', JSON.stringify({ name: user.name, email: user.email }));
+      window.location.href = 'app.html';
+    } catch (e) {
+      showError('login-error', 'Something went wrong. Please try again.');
+    }
   }
 
   // Allow Enter key to submit

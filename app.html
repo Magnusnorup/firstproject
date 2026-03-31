@@ -974,17 +974,17 @@
       .tab-btn {
         flex: 1;
         text-align: center;
-        padding: 10px 6px;
+        padding: 12px 6px;
         font-size: 12px;
-        min-height: 40px;
+        min-height: 48px;
       }
 
       .nav-right { gap: 8px; }
       .user-greeting { display: none; }
 
       .logout-btn {
-        padding: 8px 14px;
-        min-height: 40px;
+        padding: 10px 14px;
+        min-height: 48px;
         font-size: 12px;
       }
 
@@ -1025,7 +1025,7 @@
 
       /* API card */
       .api-input-row { flex-direction: column; }
-      .api-save-btn { min-height: 44px; }
+      .api-save-btn { min-height: 48px; }
     }
   </style>
 </head>
@@ -1034,8 +1034,8 @@
 <header>
   <a href="index.html" class="logo">Reply<span>Right</span></a>
   <div class="header-tabs">
-    <button class="tab-btn active" onclick="switchTab('reply')">✦ Generate reply</button>
-    <button class="tab-btn" onclick="switchTab('profile')">Profile & settings</button>
+    <button class="tab-btn active" data-tab="reply" onclick="switchTab('reply')">✦ Generate reply</button>
+    <button class="tab-btn" data-tab="profile" onclick="switchTab('profile')">Profile & settings</button>
   </div>
   <div class="nav-right">
     <div class="api-status">
@@ -1169,6 +1169,8 @@
         <input type="password" class="api-input" id="api-key-input" placeholder="sk-ant-api03-...">
         <button class="api-save-btn" onclick="saveApiKey()">Save key</button>
       </div>
+      <p id="api-key-confirmation" style="display:none;margin-top:10px;font-size:13px;color:#6fcf8a;font-weight:500;">✓ API key saved — you're connected.</p>
+      <p id="api-key-error" style="display:none;margin-top:10px;font-size:13px;color:#e57373;font-weight:500;">Please enter a valid API key.</p>
     </div>
  
     <!-- Personal info -->
@@ -1381,9 +1383,15 @@
   }
 
   // AUTH GUARD
-  const rr_session = localStorage.getItem('rr_session');
+  let rr_session = null;
+  let currentUser = {};
+  try {
+    rr_session = localStorage.getItem('rr_session');
+    currentUser = JSON.parse(rr_session || '{}');
+  } catch (e) {
+    rr_session = null;
+  }
   if (!rr_session) window.location.href = 'login.html';
-  const currentUser = JSON.parse(rr_session || '{}');
 
   function logOut() {
     localStorage.removeItem('rr_session');
@@ -1400,17 +1408,21 @@
   // INIT
   window.onload = () => {
     document.getElementById('user-name').textContent = currentUser.name ? currentUser.name.split(' ')[0] : '';
-    const saved = localStorage.getItem('rr_profile');
-    const savedKey = localStorage.getItem('rr_api_key');
-    if (saved) {
-      profile = JSON.parse(saved);
-      fillProfileForm();
-      updateProfileBadge();
-    }
-    if (savedKey) {
-      apiKey = savedKey;
-      document.getElementById('api-key-input').value = savedKey;
-      updateApiStatus(true);
+    try {
+      const saved = localStorage.getItem('rr_profile');
+      const savedKey = localStorage.getItem('rr_api_key');
+      if (saved) {
+        profile = JSON.parse(saved);
+        fillProfileForm();
+        updateProfileBadge();
+      }
+      if (savedKey) {
+        apiKey = savedKey;
+        document.getElementById('api-key-input').value = savedKey;
+        updateApiStatus(true);
+      }
+    } catch (e) {
+      console.warn('Could not load saved profile:', e);
     }
     checkProfileWarning();
   };
@@ -1418,9 +1430,8 @@
   // TABS
   function switchTab(tab) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
     document.getElementById('view-' + tab).classList.add('active');
-    event.target.classList.add('active');
   }
  
   // TONE SELECTION (reply)
@@ -1450,11 +1461,20 @@
   // API KEY
   function saveApiKey() {
     const key = document.getElementById('api-key-input').value.trim();
-    if (key) {
+    document.getElementById('api-key-confirmation').style.display = 'none';
+    document.getElementById('api-key-error').style.display = 'none';
+    if (!key) {
+      document.getElementById('api-key-error').style.display = 'block';
+      return;
+    }
+    try {
       apiKey = key;
       localStorage.setItem('rr_api_key', key);
       updateApiStatus(true);
-      alert('API key saved!');
+      document.getElementById('api-key-confirmation').style.display = 'block';
+      setTimeout(() => document.getElementById('api-key-confirmation').style.display = 'none', 3000);
+    } catch (e) {
+      console.warn('Could not save API key:', e);
     }
   }
  
@@ -1480,7 +1500,11 @@
       workType: selectedType,
       language: selectedLang
     };
-    localStorage.setItem('rr_profile', JSON.stringify(profile));
+    try {
+      localStorage.setItem('rr_profile', JSON.stringify(profile));
+    } catch (e) {
+      console.warn('Could not save profile:', e);
+    }
     updateProfileBadge();
     checkProfileWarning();
     document.getElementById('save-confirmation').style.display = 'block';
@@ -1631,9 +1655,14 @@ ${email}
           })
         });
         const data = await response.json();
+        if (!response.ok || !data.content || !data.content[0]) {
+          throw new Error(data.error?.message || 'API request failed');
+        }
         const text = data.content[0].text;
         const clean = text.replace(/```json|```/g, '').trim();
-        replies = JSON.parse(clean).replies;
+        const parsed = JSON.parse(clean);
+        if (!parsed.replies || !parsed.replies.length) throw new Error('No replies in response');
+        replies = parsed.replies;
       } else {
         // Demo mode
         await new Promise(r => setTimeout(r, 1800));
