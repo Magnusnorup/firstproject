@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReplyRight — Sign in</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0f0f0f;
+      --white: #fafaf8;
+      --gray-50: #f7f7f5;
+      --gray-100: #f2f2f0;
+      --gray-200: #e4e4e0;
+      --gray-400: #b0b0a8;
+      --gray-500: #8a8a84;
+      --gray-700: #4a4a46;
+      --accent: #1a472a;
+      --accent-light: #e8f0ea;
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'DM Sans', sans-serif;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--gray-50);
+      color: var(--black);
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 60px;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 22px;
+      color: var(--black);
+      text-decoration: none;
+      letter-spacing: -0.3px;
+    }
+
+    .nav-logo span { color: var(--accent); font-style: italic; }
+
+    .nav-back {
+      font-size: 14px;
+      color: var(--gray-500);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--black); }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 24px 60px;
+    }
+
+    .auth-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 420px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+
+    /* TABS */
+    .auth-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 16px;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gray-500);
+      background: var(--gray-50);
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .auth-tab.active {
+      background: var(--white);
+      color: var(--black);
+      font-weight: 500;
+    }
+
+    .auth-tab:first-child { border-right: 1px solid var(--gray-200); }
+
+    /* FORM */
+    .auth-body { padding: 32px; }
+
+    .auth-title {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .auth-subtitle {
+      font-size: 14px;
+      color: var(--gray-500);
+      font-weight: 300;
+      margin-bottom: 28px;
+    }
+
+    .form-panel { display: none; }
+    .form-panel.active { display: block; }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-700);
+      letter-spacing: 0.3px;
+    }
+
+    input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--black);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input:focus { border-color: var(--accent); }
+    input::placeholder { color: var(--gray-400); }
+
+    .auth-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s;
+    }
+
+    .auth-btn:hover { background: var(--accent); }
+
+    .auth-error {
+      font-size: 13px;
+      color: #c0392b;
+      background: #fef0f0;
+      border: 1px solid #f5c6c6;
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .auth-footer {
+      text-align: center;
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-top: 20px;
+    }
+
+    .auth-footer a {
+      color: var(--accent);
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .auth-footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Reply<span>Right</span></a>
+  <a href="index.html" class="nav-back">← Back to home</a>
+</nav>
+
+<main>
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-signup" onclick="switchTab('signup')">Sign up</button>
+      <button class="auth-tab" id="tab-login" onclick="switchTab('login')">Log in</button>
+    </div>
+    <div class="auth-body">
+
+      <!-- SIGN UP -->
+      <div class="form-panel active" id="panel-signup">
+        <h1 class="auth-title">Create your account</h1>
+        <p class="auth-subtitle">Free forever. No credit card needed.</p>
+        <div class="field-group">
+          <label>Full name</label>
+          <input type="text" id="signup-name" placeholder="Magnus Andersen" autocomplete="name">
+        </div>
+        <div class="field-group">
+          <label>Email</label>
+          <input type="email" id="signup-email" placeholder="you@company.com" autocomplete="email">
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <input type="password" id="signup-password" placeholder="At least 6 characters" autocomplete="new-password">
+        </div>
+        <button class="auth-btn" onclick="signUp()">Create free account</button>
+        <div class="auth-error" id="signup-error"></div>
+        <p class="auth-footer">Already have an account? <a onclick="switchTab('login')">Log in</a></p>
+      </div>
+
+      <!-- LOG IN -->
+      <div class="form-panel" id="panel-login">
+        <h1 class="auth-title">Welcome back</h1>
+        <p class="auth-subtitle">Good to see you again.</p>
+        <div class="field-group">
+          <label>Email</label>
+          <input type="email" id="login-email" placeholder="you@company.com" autocomplete="email">
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="Your password" autocomplete="current-password">
+        </div>
+        <button class="auth-btn" onclick="logIn()">Log in</button>
+        <div class="auth-error" id="login-error"></div>
+        <p class="auth-footer">Don't have an account? <a onclick="switchTab('signup')">Sign up free</a></p>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+  // Already logged in? Skip straight to app
+  if (localStorage.getItem('rr_session')) {
+    window.location.href = 'app.html';
+  }
+
+  function switchTab(tab) {
+    document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('panel-signup').classList.toggle('active', tab === 'signup');
+    document.getElementById('panel-login').classList.toggle('active', tab === 'login');
+  }
+
+  function showError(id, msg) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function hideError(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+
+  function signUp() {
+    hideError('signup-error');
+    const name = document.getElementById('signup-name').value.trim();
+    const email = document.getElementById('signup-email').value.trim().toLowerCase();
+    const password = document.getElementById('signup-password').value;
+
+    if (!name) return showError('signup-error', 'Please enter your full name.');
+    if (!email || !email.includes('@')) return showError('signup-error', 'Please enter a valid email address.');
+    if (password.length < 6) return showError('signup-error', 'Password must be at least 6 characters.');
+
+    const users = JSON.parse(localStorage.getItem('rr_users') || '[]');
+    if (users.find(u => u.email === email)) {
+      return showError('signup-error', 'An account with that email already exists. Try logging in.');
+    }
+
+    users.push({ name, email, password });
+    localStorage.setItem('rr_users', JSON.stringify(users));
+    localStorage.setItem('rr_session', JSON.stringify({ name, email }));
+    window.location.href = 'app.html';
+  }
+
+  function logIn() {
+    hideError('login-error');
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    const password = document.getElementById('login-password').value;
+
+    if (!email) return showError('login-error', 'Please enter your email.');
+    if (!password) return showError('login-error', 'Please enter your password.');
+
+    const users = JSON.parse(localStorage.getItem('rr_users') || '[]');
+    const user = users.find(u => u.email === email && u.password === password);
+    if (!user) return showError('login-error', 'Incorrect email or password.');
+
+    localStorage.setItem('rr_session', JSON.stringify({ name: user.name, email: user.email }));
+    window.location.href = 'app.html';
+  }
+
+  // Allow Enter key to submit
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const signupActive = document.getElementById('panel-signup').classList.contains('active');
+    if (signupActive) signUp(); else logIn();
+  });
+</script>
+
+</body>
+</html>

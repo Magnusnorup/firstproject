@@ -88,6 +88,37 @@
       color: var(--black);
     }
  
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-greeting {
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+
+    .user-greeting strong {
+      color: var(--black);
+      font-weight: 500;
+    }
+
+    .logout-btn {
+      padding: 7px 16px;
+      border-radius: 100px;
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--gray-500);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .logout-btn:hover { border-color: var(--gray-400); color: var(--black); }
+
     .api-status {
       display: flex;
       align-items: center;
@@ -726,9 +757,13 @@
     <button class="tab-btn active" onclick="switchTab('reply')">✦ Generate reply</button>
     <button class="tab-btn" onclick="switchTab('profile')">Profile & settings</button>
   </div>
-  <div class="api-status">
-    <div class="status-dot" id="status-dot"></div>
-    <span id="status-text">No API key</span>
+  <div class="nav-right">
+    <div class="api-status">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-text">No API key</span>
+    </div>
+    <span class="user-greeting">Hi, <strong id="user-name"></strong></span>
+    <button class="logout-btn" onclick="logOut()">Log out</button>
   </div>
 </header>
  
@@ -988,6 +1023,16 @@
 </div>
  
 <script>
+  // AUTH GUARD
+  const rr_session = localStorage.getItem('rr_session');
+  if (!rr_session) window.location.href = 'login.html';
+  const currentUser = JSON.parse(rr_session || '{}');
+
+  function logOut() {
+    localStorage.removeItem('rr_session');
+    window.location.href = 'login.html';
+  }
+
   // STATE
   let selectedTone = 'confident';
   let selectedType = 'sales';
@@ -997,6 +1042,7 @@
  
   // INIT
   window.onload = () => {
+    document.getElementById('user-name').textContent = currentUser.name ? currentUser.name.split(' ')[0] : '';
     const saved = localStorage.getItem('rr_profile');
     const savedKey = localStorage.getItem('rr_api_key');
     if (saved) {
