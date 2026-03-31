@@ -565,6 +565,30 @@
  
     .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
     .copy-btn.copied { background: var(--accent); color: white; border-color: var(--accent); }
+
+    .feedback-btns {
+      display: flex;
+      gap: 4px;
+    }
+
+    .feedback-btn {
+      width: 30px; height: 30px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-400);
+      line-height: 1;
+    }
+
+    .feedback-btn:hover { border-color: var(--gray-400); color: var(--gray-700); }
+    .feedback-btn.active-up { background: #e8f8ee; border-color: #4caf79; color: #2d7a50; }
+    .feedback-btn.active-down { background: #fef0f0; border-color: #e57373; color: #c0392b; }
  
     .reply-body {
       padding: 20px;
@@ -1063,6 +1087,10 @@ ${email}
           </div>
           <div class="reply-actions">
             <span class="strategy-tag ${tagClasses[i]}">${r.strategy}</span>
+            <div class="feedback-btns">
+              <button class="feedback-btn" title="Good reply" onclick="rateReply(this, ${i}, 'up')">👍</button>
+              <button class="feedback-btn" title="Not helpful" onclick="rateReply(this, ${i}, 'down')">👎</button>
+            </div>
             <button class="copy-btn" onclick="copyReply(this, ${i})">Copy</button>
           </div>
         </div>
@@ -1084,6 +1112,15 @@ ${email}
     });
   }
  
+  function rateReply(btn, idx, rating) {
+    const btns = btn.parentElement.querySelectorAll('.feedback-btn');
+    const alreadyActive = btn.classList.contains('active-up') || btn.classList.contains('active-down');
+    btns.forEach(b => b.classList.remove('active-up', 'active-down'));
+    if (!alreadyActive) {
+      btn.classList.add(rating === 'up' ? 'active-up' : 'active-down');
+    }
+  }
+
   function getDemoReplies(email) {
     const name = profile.name || 'there';
     const company = profile.company || 'us';
