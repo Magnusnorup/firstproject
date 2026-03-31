@@ -180,6 +180,174 @@
     .btn-secondary:hover { color: var(--black); }
     .btn-secondary::after { content: '→'; }
 
+    /* PREVIEW TABS */
+    .preview-tabs {
+      display: flex;
+      background: var(--gray-100);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 10px 16px 0;
+      gap: 4px;
+    }
+
+    .preview-tab {
+      padding: 8px 18px;
+      border-radius: 8px 8px 0 0;
+      border: none;
+      background: transparent;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--gray-500);
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-bottom: -1px;
+      border-bottom: 2px solid transparent;
+    }
+
+    .preview-tab.active {
+      color: var(--black);
+      font-weight: 500;
+      background: var(--white);
+      border-bottom-color: var(--white);
+    }
+
+    .preview-tab:not(.active):hover { color: var(--black); }
+
+    /* PROSPECT CARD */
+    .prospect-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      font-size: 13px;
+    }
+
+    .prospect-card-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 9px 16px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .prospect-card-row:last-child { border-bottom: none; }
+
+    .prospect-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gray-500);
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      width: 68px;
+      flex-shrink: 0;
+    }
+
+    .prospect-value { color: var(--black); font-weight: 400; }
+    .prospect-link { color: var(--accent); }
+
+    /* TWO-PRODUCT CARDS */
+    .two-product-section {
+      padding: 80px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .two-product-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .product-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 40px 36px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .product-card:hover {
+      border-color: var(--gray-500);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+    }
+
+    .product-icon {
+      font-size: 32px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .product-card h3 {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 400;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .product-card > p {
+      font-size: 15px;
+      color: var(--gray-500);
+      font-weight: 300;
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+
+    .product-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .product-list li {
+      font-size: 14px;
+      color: var(--gray-500);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .product-list li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 500;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    /* HOW IT WORKS TABS */
+    .how-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 40px;
+    }
+
+    .how-tab {
+      padding: 9px 22px;
+      border-radius: 100px;
+      border: 1.5px solid var(--gray-200);
+      background: transparent;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gray-500);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .how-tab.active {
+      background: var(--black);
+      border-color: var(--black);
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .how-tab:not(.active):hover { border-color: var(--gray-500); color: var(--black); }
+
+    .how-steps { display: none; }
+    .how-steps.active { display: grid; }
+
     /* EMAIL PREVIEW */
     .email-preview {
       margin-top: 80px;
@@ -711,11 +879,21 @@
       .section { padding: 64px 20px; }
       .section-title { margin-bottom: 36px; }
 
+      .two-product-section { padding: 48px 20px; }
+      .two-product-grid { grid-template-columns: 1fr; gap: 16px; }
+      .product-card { padding: 28px 24px; }
+
+      .how-tabs { flex-wrap: wrap; gap: 8px; }
+      .how-tab { flex: 1; text-align: center; min-height: 48px; }
+
       .steps { grid-template-columns: 1fr; }
       .step { padding: 32px 24px; }
       .step-number { font-size: 48px; margin-bottom: 16px; }
 
       .integrations-strip { flex-direction: column; align-items: flex-start; gap: 16px; margin-top: 40px; padding-top: 32px; }
+
+      .preview-tabs { padding: 8px 12px 0; }
+      .preview-tab { font-size: 12px; padding: 7px 14px; }
 
       .pricing-grid { grid-template-columns: 1fr; }
       .pricing-card { padding: 32px 28px; }
@@ -762,31 +940,105 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-tag">Your personal AI sales coach</div>
-    <h1>The AI that knows <em>you</em> — not just sales</h1>
-    <p>ReplyRight learns your style, your objections, and your deals. Unlike ChatGPT, it doesn't give generic replies — it replies exactly like you would, but better.</p>
+    <div class="hero-tag">Inbound replies + Cold outreach — powered by AI</div>
+    <h1>Reply smarter. <em>Prospect</em> better.</h1>
+    <p>Handle every inbound objection with the perfect reply — and write cold outreach that actually gets responses. ReplyRight knows your voice, your deals, and your prospects.</p>
     <div class="hero-actions">
       <a href="login.html" class="btn-primary">Try it free</a>
       <a href="#how-it-works" class="btn-secondary">See how it works</a>
     </div>
 
     <div class="email-preview">
-      <div class="email-toolbar">
-        <div class="dot dot-r"></div>
-        <div class="dot dot-y"></div>
-        <div class="dot dot-g"></div>
-        <span class="email-label">Incoming email — Magnus@company.dk</span>
+      <div class="preview-tabs">
+        <button class="preview-tab active" onclick="switchPreview('inbound', this)">↩ Inbound reply</button>
+        <button class="preview-tab" onclick="switchPreview('outreach', this)">✦ Outreach</button>
       </div>
-      <div class="email-body">
-        <div class="email-from">From: sarah.jensen@prospect.com</div>
-        <div class="email-subject">Re: Your proposal — a few concerns</div>
-        <div class="email-text">
-          Thanks for sending over the proposal. The pricing is a bit higher than we expected and we're also looking at two other vendors. Not sure if this is the right fit for us right now...
+
+      <!-- INBOUND PREVIEW -->
+      <div id="preview-inbound">
+        <div class="email-toolbar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+          <span class="email-label">Incoming email — magnus@company.dk</span>
         </div>
-        <div class="ai-reply">
-          <div class="ai-reply-label">ReplyRight suggestion</div>
-          <p>Hi Sarah, thank you for your honest feedback — I completely understand the need to evaluate all options carefully. Many of our clients had similar concerns before seeing the ROI firsthand. Would a 20-minute call this week help clarify the value for your specific situation? I'd love to address your pricing questions directly.</p>
+        <div class="email-body">
+          <div class="email-from">From: sarah.jensen@prospect.com</div>
+          <div class="email-subject">Re: Your proposal — a few concerns</div>
+          <div class="email-text">
+            Thanks for sending over the proposal. The pricing is a bit higher than we expected and we're also looking at two other vendors. Not sure if this is the right fit for us right now...
+          </div>
+          <div class="ai-reply">
+            <div class="ai-reply-label">ReplyRight suggestion</div>
+            <p>Hi Sarah, thank you for your honest feedback — I completely understand. Many of our clients had the same concerns before seeing the ROI firsthand. Would a 20-minute call this week help clarify the value for your specific situation?</p>
+          </div>
         </div>
+      </div>
+
+      <!-- OUTREACH PREVIEW -->
+      <div id="preview-outreach" style="display:none">
+        <div class="email-toolbar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+          <span class="email-label">New outreach — magnus@company.dk</span>
+        </div>
+        <div class="email-body">
+          <div class="prospect-card">
+            <div class="prospect-card-row">
+              <span class="prospect-label">Prospect</span>
+              <span class="prospect-value">Sarah Jensen · Head of Sales</span>
+            </div>
+            <div class="prospect-card-row">
+              <span class="prospect-label">Company</span>
+              <span class="prospect-value">Acme Corp</span>
+            </div>
+            <div class="prospect-card-row">
+              <span class="prospect-label">LinkedIn</span>
+              <span class="prospect-value prospect-link">linkedin.com/in/sarahjensen</span>
+            </div>
+            <div class="prospect-card-row">
+              <span class="prospect-label">Notes</span>
+              <span class="prospect-value">Just raised Series A · hiring 10 sales reps</span>
+            </div>
+          </div>
+          <div class="ai-reply" style="margin-top:0">
+            <div class="ai-reply-label">ReplyRight outreach</div>
+            <p>Hi Sarah, congrats on the Series A — scaling a sales team of 10 is exciting but writing personalised outreach for every prospect eats hours. ReplyRight handles that automatically. Worth 15 minutes to see if it fits your new team?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- TWO PRODUCTS -->
+  <section class="two-product-section">
+    <div class="two-product-grid">
+      <div class="product-card">
+        <span class="product-icon">📥</span>
+        <h3>Never fumble an objection again</h3>
+        <p>Paste any incoming sales email and get 3 perfect, personalised replies instantly — written in your voice.</p>
+        <ul class="product-list">
+          <li>Price objections</li>
+          <li>Competitor comparisons</li>
+          <li>Follow-up nudges</li>
+          <li>Deal stalls</li>
+          <li>Angry prospects</li>
+        </ul>
+      </div>
+      <div class="product-card">
+        <span class="product-icon">🎯</span>
+        <h3>Cold outreach that actually gets replies</h3>
+        <p>Enter your prospect's LinkedIn, website, and what you know about them — ReplyRight writes a hyper-personalised opening email that stands out.</p>
+        <ul class="product-list">
+          <li>LinkedIn profile</li>
+          <li>Company website</li>
+          <li>Recent news & signals</li>
+          <li>Your value prop</li>
+          <li>Their pain points</li>
+        </ul>
       </div>
     </div>
   </section>
@@ -796,8 +1048,12 @@
   <!-- HOW IT WORKS -->
   <section class="section" id="how-it-works">
     <div class="section-label">How it works</div>
-    <h2 class="section-title">From inbox to <em>perfect reply</em> in seconds</h2>
-    <div class="steps">
+    <h2 class="section-title">Two workflows, <em>one tool</em></h2>
+    <div class="how-tabs">
+      <button class="how-tab active" onclick="switchHowTab('inbound', this)">↩ Inbound reply</button>
+      <button class="how-tab" onclick="switchHowTab('outreach', this)">✦ Cold outreach</button>
+    </div>
+    <div class="how-steps active steps" id="how-inbound">
       <div class="step">
         <div class="step-number">01</div>
         <h3>Paste the email</h3>
@@ -810,8 +1066,25 @@
       </div>
       <div class="step">
         <div class="step-number">03</div>
-        <h3>Get the perfect reply</h3>
-        <p>Receive a professional, persuasive response tailored to move the deal forward — ready to send in one click.</p>
+        <h3>Get 3 perfect replies</h3>
+        <p>Receive professional, persuasive responses tailored to move the deal forward — ready to send in one click.</p>
+      </div>
+    </div>
+    <div class="how-steps steps" id="how-outreach">
+      <div class="step">
+        <div class="step-number">01</div>
+        <h3>Add prospect info</h3>
+        <p>Enter the prospect's name, company, LinkedIn URL, and anything specific you know about them.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">02</div>
+        <h3>AI builds context</h3>
+        <p>ReplyRight uses their profile, your value proposition, and your communication style to craft the perfect opener.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">03</div>
+        <h3>Get personalised emails</h3>
+        <p>Receive 3 hyper-personalised cold outreach emails — each with a different angle to maximise reply rates.</p>
       </div>
     </div>
 
@@ -897,6 +1170,20 @@
   </footer>
 
   <script>
+    function switchPreview(tab, btn) {
+      document.querySelectorAll('.preview-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('preview-inbound').style.display = tab === 'inbound' ? 'block' : 'none';
+      document.getElementById('preview-outreach').style.display = tab === 'outreach' ? 'block' : 'none';
+    }
+
+    function switchHowTab(tab, btn) {
+      document.querySelectorAll('.how-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.how-steps').forEach(s => s.classList.remove('active'));
+      document.getElementById('how-' + tab).classList.add('active');
+    }
+
     function toggleNav() {
       document.getElementById('nav-links').classList.toggle('open');
       document.getElementById('nav-hamburger').classList.toggle('open');
