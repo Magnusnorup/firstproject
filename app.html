@@ -867,6 +867,45 @@
       </div>
     </div>
  
+    <!-- Work type & Language -->
+    <div class="profile-card">
+      <div class="profile-card-header">
+        <div class="card-icon">🌐</div>
+        <div>
+          <h2>Work type & language</h2>
+          <p>Sets the default context and language for every reply you generate</p>
+        </div>
+      </div>
+      <div class="profile-card-body full">
+        <div class="field-group">
+          <label>What kind of emails do you mainly reply to?</label>
+          <div class="type-options" style="margin-top:4px">
+            <button class="type-btn active" data-type="sales" onclick="selectType(this)">
+              <span class="type-emoji">💼</span>Sales
+            </button>
+            <button class="type-btn" data-type="customer-service" onclick="selectType(this)">
+              <span class="type-emoji">🎧</span>Customer service
+            </button>
+            <button class="type-btn" data-type="customer-success" onclick="selectType(this)">
+              <span class="type-emoji">🌱</span>Customer success
+            </button>
+            <button class="type-btn" data-type="support" onclick="selectType(this)">
+              <span class="type-emoji">🛠️</span>Support
+            </button>
+          </div>
+        </div>
+        <div class="field-group" style="margin-top:8px">
+          <label>Default reply language</label>
+          <div class="lang-options" style="margin-top:4px">
+            <button class="lang-btn active" data-lang="danish" onclick="selectLang(this)">🇩🇰 Danish</button>
+            <button class="lang-btn" data-lang="swedish" onclick="selectLang(this)">🇸🇪 Swedish</button>
+            <button class="lang-btn" data-lang="german" onclick="selectLang(this)">🇩🇪 German</button>
+            <button class="lang-btn" data-lang="english" onclick="selectLang(this)">🇬🇧 English</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- What you sell -->
     <div class="profile-card">
       <div class="profile-card-header">
@@ -986,18 +1025,16 @@
     selectedTone = btn.dataset.tone;
   }
 
-  // EMAIL TYPE
+  // EMAIL TYPE (syncs reply panel + profile card)
   function selectType(btn) {
-    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
     selectedType = btn.dataset.type;
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === selectedType));
   }
 
-  // LANGUAGE
+  // LANGUAGE (syncs reply panel + profile card)
   function selectLang(btn) {
-    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
     selectedLang = btn.dataset.lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === selectedLang));
   }
  
   // TONE CHIPS (profile)
@@ -1034,7 +1071,9 @@
       objections: document.getElementById('p-objections').value,
       counters: document.getElementById('p-counters').value,
       extra: document.getElementById('p-extra').value,
-      tones: [...document.querySelectorAll('.tone-chip.selected')].map(c => c.textContent)
+      tones: [...document.querySelectorAll('.tone-chip.selected')].map(c => c.textContent),
+      workType: selectedType,
+      language: selectedLang
     };
     localStorage.setItem('rr_profile', JSON.stringify(profile));
     updateProfileBadge();
@@ -1054,6 +1093,14 @@
     if (profile.objections) document.getElementById('p-objections').value = profile.objections;
     if (profile.counters) document.getElementById('p-counters').value = profile.counters;
     if (profile.extra) document.getElementById('p-extra').value = profile.extra;
+    if (profile.workType) {
+      selectedType = profile.workType;
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === profile.workType));
+    }
+    if (profile.language) {
+      selectedLang = profile.language;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === profile.language));
+    }
   }
  
   function updateProfileBadge() {
