@@ -647,6 +647,73 @@
       font-weight: 500;
       cursor: pointer;
     }
+
+    .type-section, .lang-section { margin-top: 16px; }
+
+    .type-section label, .lang-section label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .type-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .type-btn {
+      padding: 10px 8px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-200);
+      background: var(--white);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--gray-500);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .type-btn .type-emoji { display: block; font-size: 18px; margin-bottom: 4px; }
+    .type-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .type-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .lang-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .lang-btn {
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-200);
+      background: var(--white);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--gray-500);
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lang-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .lang-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
@@ -678,7 +745,25 @@
           <span class="profile-badge empty" id="profile-badge">No profile set</span>
         </div>
         <div class="panel-body">
-          <textarea class="email-textarea" id="email-input" placeholder="Paste the sales email you received here...&#10;&#10;e.g. 'Thanks for the proposal, but the price is a bit high and we're also looking at other vendors...'"></textarea>
+          <div class="type-section">
+            <label>Email type</label>
+            <div class="type-options">
+              <button class="type-btn active" data-type="sales" onclick="selectType(this)">
+                <span class="type-emoji">💼</span>Sales
+              </button>
+              <button class="type-btn" data-type="customer-service" onclick="selectType(this)">
+                <span class="type-emoji">🎧</span>Customer service
+              </button>
+              <button class="type-btn" data-type="customer-success" onclick="selectType(this)">
+                <span class="type-emoji">🌱</span>Customer success
+              </button>
+              <button class="type-btn" data-type="support" onclick="selectType(this)">
+                <span class="type-emoji">🛠️</span>Support
+              </button>
+            </div>
+          </div>
+
+          <textarea class="email-textarea" id="email-input" style="margin-top:16px" placeholder="Paste the email you received here...&#10;&#10;e.g. 'Thanks for the proposal, but the price is a bit high and we're also looking at other vendors...'"></textarea>
  
           <div class="tone-section">
             <label>Reply tone</label>
@@ -704,6 +789,16 @@
             </div>
           </div>
  
+          <div class="lang-section">
+            <label>Reply language</label>
+            <div class="lang-options">
+              <button class="lang-btn active" data-lang="danish" onclick="selectLang(this)">🇩🇰 Danish</button>
+              <button class="lang-btn" data-lang="swedish" onclick="selectLang(this)">🇸🇪 Swedish</button>
+              <button class="lang-btn" data-lang="german" onclick="selectLang(this)">🇩🇪 German</button>
+              <button class="lang-btn" data-lang="english" onclick="selectLang(this)">🇬🇧 English</button>
+            </div>
+          </div>
+
           <button class="generate-btn" id="generate-btn" onclick="generateReplies()">
             <div class="spinner" id="spinner"></div>
             <span id="btn-text">Generate 3 replies</span>
@@ -854,6 +949,8 @@
 <script>
   // STATE
   let selectedTone = 'confident';
+  let selectedType = 'sales';
+  let selectedLang = 'danish';
   let profile = {};
   let apiKey = '';
  
@@ -887,6 +984,20 @@
     document.querySelectorAll('.reply-tone-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     selectedTone = btn.dataset.tone;
+  }
+
+  // EMAIL TYPE
+  function selectType(btn) {
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedType = btn.dataset.type;
+  }
+
+  // LANGUAGE
+  function selectLang(btn) {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedLang = btn.dataset.lang;
   }
  
   // TONE CHIPS (profile)
@@ -974,18 +1085,33 @@
     if (profile.tones && profile.tones.length) context += `Communication style: ${profile.tones.join(', ')}\n`;
     if (profile.extra) context += `Additional notes: ${profile.extra}\n`;
  
+    const typeContext = {
+      'sales': 'This is a sales email. Focus on moving the deal forward, handling objections, and creating value.',
+      'customer-service': 'This is a customer service email. Focus on resolving the issue quickly, showing empathy, and leaving the customer satisfied.',
+      'customer-success': 'This is a customer success email. Focus on helping the customer get maximum value, driving adoption, and building a long-term relationship.',
+      'support': 'This is a technical support email. Focus on diagnosing the problem clearly, providing actionable steps, and ensuring resolution.'
+    }[selectedType] || '';
+
+    const langInstruction = {
+      'danish': 'Write the reply in Danish (Dansk).',
+      'swedish': 'Write the reply in Swedish (Svenska).',
+      'german': 'Write the reply in German (Deutsch).',
+      'english': 'Write the reply in English.'
+    }[selectedLang] || 'Write the reply in English.';
+
     return `${context}
-You are a world-class sales email coach. Generate exactly 3 different reply options to the incoming email below.
- 
+You are a world-class email coach. Generate exactly 3 different reply options to the incoming email below.
+
+Email type context: ${typeContext}
 Tone for all replies: ${selectedTone}
- 
+Language: ${langInstruction}
+
 Each reply should:
 - Be realistic and natural, not robotic
-- Address the prospect's specific concerns
-- Move the deal forward
+- Address the sender's specific concerns
 - Match the communication style described above
 - Be ready to send as-is
- 
+
 Format your response as JSON only, no other text:
 {
   "replies": [
@@ -994,7 +1120,7 @@ Format your response as JSON only, no other text:
     { "strategy": "strategy name (2-3 words)", "body": "full email reply text" }
   ]
 }
- 
+
 Incoming email:
 """
 ${email}
