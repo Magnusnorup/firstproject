@@ -564,6 +564,136 @@
       font-size: 15px;
       margin-top: 16px;
     }
+
+    /* HAMBURGER */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      min-width: 48px;
+      min-height: 48px;
+      border-radius: 8px;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--black);
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* MOBILE */
+    @media (max-width: 767px) {
+      nav {
+        padding: 12px 20px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .nav-hamburger { display: flex; }
+
+      .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+        padding: 8px 0 12px;
+        border-top: 1px solid var(--gray-200);
+        margin-top: 8px;
+      }
+
+      .nav-links.open { display: flex; }
+
+      .nav-links li { width: 100%; }
+
+      .nav-links a {
+        display: block;
+        padding: 13px 0;
+        font-size: 16px;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-cta {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 4px;
+        min-height: 48px;
+        padding: 12px 22px;
+      }
+
+      .hero { padding: 100px 20px 56px; }
+
+      .hero p { font-size: 16px; }
+
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+      }
+
+      .btn-primary {
+        width: 100%;
+        text-align: center;
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-secondary { min-height: 48px; }
+
+      .email-preview { margin-top: 48px; }
+      .email-body { padding: 18px 16px; }
+      .ai-reply { padding: 14px; }
+      .email-subject { font-size: 15px; }
+
+      .section { padding: 64px 20px; }
+      .section-title { margin-bottom: 36px; }
+
+      .steps { grid-template-columns: 1fr; }
+      .step { padding: 32px 24px; }
+      .step-number { font-size: 48px; margin-bottom: 16px; }
+
+      .pricing-grid { grid-template-columns: 1fr; }
+      .pricing-card { padding: 32px 28px; }
+
+      .waitlist-section { padding: 64px 20px; }
+
+      .waitlist-form {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .waitlist-input,
+      .btn-waitlist {
+        width: 100%;
+        min-height: 52px;
+        text-align: center;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+        padding: 28px 20px;
+      }
+
+      .divider { margin: 0 20px; }
+    }
   </style>
 </head>
 <body>
@@ -571,9 +701,12 @@
   <!-- NAV -->
   <nav>
     <a href="#" class="nav-logo">Reply<span>Right</span></a>
-    <ul class="nav-links">
-      <li><a href="#how-it-works">How it works</a></li>
-      <li><a href="#pricing">Pricing</a></li>
+    <button class="nav-hamburger" id="nav-hamburger" onclick="toggleNav()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#how-it-works" onclick="closeNav()">How it works</a></li>
+      <li><a href="#pricing" onclick="closeNav()">Pricing</a></li>
       <li><a href="login.html" class="nav-cta">Try it free</a></li>
     </ul>
   </nav>
@@ -699,6 +832,16 @@
   </footer>
 
   <script>
+    function toggleNav() {
+      document.getElementById('nav-links').classList.toggle('open');
+      document.getElementById('nav-hamburger').classList.toggle('open');
+    }
+
+    function closeNav() {
+      document.getElementById('nav-links').classList.remove('open');
+      document.getElementById('nav-hamburger').classList.remove('open');
+    }
+
     function joinWaitlist() {
       const input = document.getElementById('email-input');
       const success = document.getElementById('success-msg');

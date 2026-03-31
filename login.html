@@ -209,6 +209,34 @@
     }
 
     .auth-footer a:hover { text-decoration: underline; }
+
+    /* MOBILE */
+    @media (max-width: 767px) {
+      nav { padding: 12px 20px; }
+
+      main {
+        padding: 80px 16px 40px;
+        align-items: flex-start;
+      }
+
+      .auth-card {
+        max-width: 100%;
+        box-shadow: none;
+        border-radius: 12px;
+      }
+
+      .auth-body { padding: 24px 20px; }
+
+      /* Prevent iOS zoom on focus + ensure 48px tap height */
+      input {
+        font-size: 16px;
+        min-height: 48px;
+      }
+
+      .auth-btn { min-height: 52px; font-size: 15px; }
+
+      .auth-tab { min-height: 48px; }
+    }
   </style>
 </head>
 <body>

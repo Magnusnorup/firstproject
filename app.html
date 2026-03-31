@@ -747,6 +747,80 @@
       color: var(--accent);
       font-weight: 500;
     }
+
+    /* MOBILE */
+    @media (max-width: 767px) {
+      header {
+        padding: 10px 16px;
+        flex-wrap: wrap;
+        gap: 6px;
+        height: auto;
+      }
+
+      .header-tabs {
+        order: 3;
+        width: 100%;
+        border-top: 1px solid var(--gray-100);
+        padding-top: 8px;
+        justify-content: center;
+      }
+
+      .tab-btn {
+        flex: 1;
+        text-align: center;
+        padding: 10px 6px;
+        font-size: 12px;
+        min-height: 40px;
+      }
+
+      .nav-right { gap: 8px; }
+      .user-greeting { display: none; }
+
+      .logout-btn {
+        padding: 8px 14px;
+        min-height: 40px;
+        font-size: 12px;
+      }
+
+      body { padding-top: 100px; }
+
+      /* Reply layout: single column */
+      .reply-container {
+        grid-template-columns: 1fr;
+        padding: 16px 14px 60px;
+        gap: 16px;
+      }
+
+      .input-panel { position: static; }
+
+      /* Tone: 3-col → 2-col */
+      .reply-tone-options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      /* Type + lang: already 2-col, fine on mobile */
+
+      /* Reply cards */
+      .reply-card-header { padding: 12px 14px; }
+      .reply-body { padding: 14px; font-size: 13px; }
+      .reply-actions { gap: 6px; }
+
+      /* Profile */
+      .profile-container { padding: 0 14px 60px; margin: 20px auto; }
+
+      .profile-card-body {
+        grid-template-columns: 1fr;
+      }
+
+      .field-group.span2 { grid-column: span 1; }
+
+      .profile-card-body,
+      .profile-card-header { padding: 16px; }
+
+      /* API card */
+      .api-input-row { flex-direction: column; }
+      .api-save-btn { min-height: 44px; }
+    }
   </style>
 </head>
 <body>
